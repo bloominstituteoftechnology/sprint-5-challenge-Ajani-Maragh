@@ -2,14 +2,14 @@ async function sprintChallenge5() { // Note the async keyword, in case you wish 
   // 👇 WORK WORK BELOW THIS LINE 👇
 
     async function getDataFromEndPoints(endpoint) {
-    console.log(`getting data from end point: ${endpoint}...`);
+    //console.log(`getting data from end point: ${endpoint}...`);
     const response = await axios.get(endpoint);
     const data = response.data;
    
     return data;
   }
   const learnerInfo = document.querySelector('.info')
-  learnerInfo.textContent = 'No learner selected'
+  learnerInfo.textContent = 'No learner is selected'
 
   const learnersEndPoint = 'http://localhost:3003/api/learners';
   const mentorsEndPoint = 'http://localhost:3003/api/mentors';
@@ -19,7 +19,7 @@ async function sprintChallenge5() { // Note the async keyword, in case you wish 
     getDataFromEndPoints(mentorsEndPoint)
   ]);
   
-console.log(learnersData, mentorsData)
+//console.log(learnersData, mentorsData)
   
   const combinedData = [];
   learnersData.forEach(learner => {
@@ -60,13 +60,11 @@ console.log(learnersData, mentorsData)
       const ul = document.createElement('ul');
       learnerCard.appendChild(ul);
       
-      const li = document.createElement('li');
-      li.textContent = learner.mentors[0];
-      ul.appendChild(li);
-      
-      const li2 = document.createElement('li');
-      li2.textContent = learner.mentors[1]
-      ul.appendChild(li2)
+      learner.mentors.forEach(mentor => {
+        const li = document.createElement('li')
+        li.textContent = mentor
+        ul.appendChild(li)
+      })
       
 
       learnerCard.addEventListener('click', (evt) => {
@@ -78,7 +76,7 @@ console.log(learnersData, mentorsData)
          if (learnerCard.classList.contains('selected')) {
           learnerCard.classList.remove('selected')
           learnerName.textContent = `${learner.fullName}`
-          learnerInfo.textContent = 'No learner selected'
+          learnerInfo.textContent = 'No learner is selected'
         } else {
           //removing selected from every card except current card
           //loop over the cards, remove the slected class from every single card,
@@ -95,10 +93,7 @@ console.log(learnersData, mentorsData)
          }
 
          mentors.addEventListener('click', (evt) => {
-          if (learnerCard.classList.contains('selected')) {
-             
-              evt.stopPropagation()
-          }
+         
           if (mentors.classList.contains('closed')) {
            mentors.classList.remove('closed')
             mentors.classList.add('open')
